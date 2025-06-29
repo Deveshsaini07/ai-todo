@@ -7,7 +7,8 @@ const ChatBot = () => {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const { fetchTodos } = useTodo();
-
+  const baseUrl = import.meta.env.VITE_API_BASEURL;
+console.log("base url is",baseUrl);
   useEffect(() => {
     if (!loading) {
       fetchTodos();
@@ -23,7 +24,7 @@ const ChatBot = () => {
     setLoading(true);
 
     try {
-      const res = await axios.post('/api/v1/todos/chat', { query: input });
+      const res = await axios.post(`${baseUrl}/api/v1/todos/chat`, { query: input });
       const botReply = res.data.data;
 
       setMessages((prev) => [

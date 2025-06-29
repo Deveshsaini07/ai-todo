@@ -5,13 +5,15 @@ import axios from 'axios';
 const TodoContext = createContext();
 
 export const useTodo = () => useContext(TodoContext);
+const baseUrl = import.meta.env.VITE_API_BASEURL;
+
 
 export const TodoProvider = ({ children }) => {
   const [todos, setTodos] = useState([]);
 
   const fetchTodos = async () => {
     try {
-      const response = await axios.get('/api/v1/todos/getAlltodo');
+      const response = await axios.get(`${baseUrl}/api/v1/todos/getAlltodo`);
       setTodos(response.data.data);
     } catch (error) {
       console.error('Error fetching todos:', error);
@@ -19,7 +21,7 @@ export const TodoProvider = ({ children }) => {
   };
 
   const addTodo = async (data) => {
-    const response = await axios.post('/api/v1/todos/createTodo', data);
+    const response = await axios.post(`${baseUrl}/api/v1/todos/createTodo`, data);
     const todo = response.data.data;
     setTodos((prev) => [{ ...todo }, ...prev]);
   };
@@ -28,12 +30,12 @@ export const TodoProvider = ({ children }) => {
     setTodos((prev) =>
       prev.map((item) => (item._id === _id ? updatedTodo : item))
     );
-    await axios.post(`/api/v1/todos/updateTodo/${_id}`, updatedTodo);
+    await axios.post(`${baseUrl}/api/v1/todos/updateTodo/${_id}`, updatedTodo);
   };
 
   const deleteTodo = async (_id) => {
     setTodos((prev) => prev.filter((item) => item._id !== _id));
-    await axios.post(`/api/v1/todos/deleteTodo/${_id}`);
+    await axios.post(`${baseUrl}/api/v1/todos/deleteTodo/${_id}`);
   };
 
   const toggleComplete = async (_id) => {
@@ -47,7 +49,7 @@ export const TodoProvider = ({ children }) => {
         return item;
       })
     );
-    await axios.post(`/api/v1/todos/toggleTodo/${_id}`, {
+    await axios.post(`${baseUrl}/api/v1/todos/toggleTodo/${_id}`, {
       completed,
     });
   };
