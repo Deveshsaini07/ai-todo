@@ -25,7 +25,9 @@ const openai = new  OpenAI({
     apiKey:process.env.OPENAI_API_KEY
 })
 
-
+app.get('/health',(req,res)=>{
+    res.json({message:"server is running"});
+});
 
 // const app = express();
 // app.use(express.json());
